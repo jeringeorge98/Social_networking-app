@@ -49,5 +49,8 @@ exports.signOut=async(req,res)=>{
 }
 
 exports.requireSignIn=expressJwt({
-       secret:process.env.SECRET_KEY
+    // if the token is valid ,express jwt appends the verified users id in an 
+    //auth key to the request object
+       secret:process.env.SECRET_KEY,
+       userProperty:"auth"
    })

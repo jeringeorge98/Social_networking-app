@@ -26,7 +26,13 @@ const authRoute =require("./routes/auth")
 app.use(bodyparser.json())
 //app.use('/signup',authRoute)
 app.use('/',postController)
-
+app.use(function (err, req, res, next) {
+  if (err.name === 'UnauthorizedError') {
+    res.status(401).json({
+      error:'Unauthorized'
+    });
+  }
+});
 
 //app.use(expressValidator())
 // app.get("/",(req,res)=>{

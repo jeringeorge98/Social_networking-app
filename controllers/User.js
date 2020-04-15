@@ -10,7 +10,7 @@ const{_id}=req.body;
         })
     }
    req.profile=user;
-   console.log(req.profile,'profile')
+   //console.log(req.profile,'profile')
    next();
 })
 
@@ -83,3 +83,4 @@ user.remove((err)=>{
     })
 })
 }
+

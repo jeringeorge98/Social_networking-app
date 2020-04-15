@@ -5,9 +5,9 @@ const expressValidator=require('express-validator')
 const dotenv= require('dotenv')
 const bodyparser=require('body-parser')
 dotenv.config();
-const port =5000;
+const port =process.env.PORT;
 
-mongoose.connect("mongodb+srv://Jerin1:Jerin1@nodeproject-olygz.mongodb.net/test?retryWrites=true&w=majority",{
+mongoose.connect(process.env.MONGOURI,{
   useNewUrlParser:true,
   useUnifiedTopology:true
 })

@@ -1,6 +1,83 @@
 const Post = require("../models/posts");
+const _= require('lodash')
 const formidable =require('formidable');
 const fs =require('fs')
+
+
+// to update a post
+
+exports.updatePost =(req,res)=>{
+let post=req.post
+ post = _.extend(post,req.body)
+ post.updated =Date.now();
+ post.save((err,result)=>{
+  if(err){
+    res.status(400).json({
+      err:err
+    })
+  }
+res.json(result)
+
+})
+
+}
+
+// to delete a post
+
+exports.deletePost =(req,res)=>{
+let post =req.post;
+post.remove((err,resp)=>{
+  if(err){
+    return res.status(400).json({
+      error:err
+    })
+  }
+  return res.json({
+    message:'Your Post has been succesfully deleted!'
+  })
+})
+
+}
+
+// to check if the user is deleting the post he/she created
+exports.checkPoster=(req,res,next)=>{
+// console.log(req.post,"Post")
+// console.log(req.post.postedBy._id,"id")
+// console.log(req.auth.id,"auth id")
+// console.log(req.auth,"Auth")
+let checkPoster = req.auth && req.post && req.post.postedBy._id ==req.auth.id;
+if(!checkPoster){
+  return res.status(403).json({
+    error:"User not authorised"
+  })
+}
+next();
+}
+
+
+// retrieve post by the particular id
+
+exports.postById =(req,res,next,id)=>{
+Post.findById(id)
+.populate("postedBy","_id name")
+.exec((err,results)=>{
+if(err || !results){
+res.status(400).json({
+  error:"Could not find the post"
+})
+}
+req.post=results;
+next();
+
+})
+
+
+}
+
+
+
+
+
 // retrieve posts
 exports.getPosts = (req, res) => {
   const post =Post.find()

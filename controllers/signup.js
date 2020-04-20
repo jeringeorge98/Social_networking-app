@@ -13,12 +13,12 @@ if(Userexits){
 const user =await new User(req.body);
 user.save((err,resp)=>{
     if(err){
-          res.send({
+          res.json({
               message:err
           })
     }
     console.log(user)
- res.status(200).json({user});
+ res.status(200).json({user,message:"Succesfully signed up!"});
 })
 
 }
@@ -28,18 +28,18 @@ const{email,password}=req.body;
   User.findOne({email},(err,user)=>{
       if(err || !user){
           return res.status(401).json({
-              message:'User does not exist!!,Please Sign up'
+              error:'User does not exist!!,Please Sign up'
           })
-      }
+      } 
       if(!user.authenticate(password)){
           return res.status(401).json({
-              message:"Password entered is incorrect"
+              error:"Password entered is incorrect"
           })
       }
     const token =jwt.sign({id:user._id},process.env.SECRET_KEY);
     res.cookie('t',token,{expire:new Date()+1000200020})   
        const {_id,email,name}=user
-       return res.status(200).json({token,user:{_id,email,name}})
+       return res.status(200).json({token,user:{_id,email,name},message:"Logged in Sucessfully!"})
   })
 }
 

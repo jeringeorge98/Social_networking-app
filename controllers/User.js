@@ -1,5 +1,7 @@
 const User =require('../models/user');
 const _= require('lodash');
+
+
 exports.userById =(req,res,next,id)=>{
 const{_id}=req.body;
 
@@ -18,7 +20,7 @@ const{_id}=req.body;
 
 exports.hasAuthorization=(req,res,next)=>{
 console.log(req.profile,req.auth)
- const authorized = req.profile && req.auth && req.profile._id === req.auth._id;
+ const authorized = req.profile && req.auth && req.profile._id === req.auth.id;
  if(!authorized){
      res.status(403).json({
          message:'Not authorized'

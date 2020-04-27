@@ -37,7 +37,7 @@ exports.getUsers=(req,res)=>{
                   error:err
               })
           }
-          return res.status(200).json({users})
+          return res.status(200).json(users)
     })
 }
 // get single users

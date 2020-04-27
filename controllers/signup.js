@@ -38,8 +38,8 @@ const{email,password}=req.body;
       }
     const token =jwt.sign({id:user._id},process.env.SECRET_KEY);
     res.cookie('t',token,{expire:new Date()+1000200020})   
-       const {_id,email,name}=user
-       return res.status(200).json({token,user:{_id,email,name},message:"Logged in Sucessfully!"})
+       const {_id,email,Username}=user
+       return res.status(200).json({token,user:{_id,email,Username},message:"Logged in Sucessfully!"})
   })
 }
 

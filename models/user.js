@@ -24,8 +24,11 @@ created:{
 type:Date,
 default:Date.now,
 },
-updated:Date
-
+updated:Date,
+photo:{
+data:Buffer,
+contentType:String
+}
 })
 userSchema.virtual("password")
 .set(function(pass)

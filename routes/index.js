@@ -3,7 +3,7 @@ const expressValidator =require('express-validator')
 
 const validator =require('../validator/index')
 const {getPosts,createPost,Test,postByUser,postById,checkPoster,deletePost,updatePost}=require('../controllers')
-const {hasAuthorization,userById,getUsers,getSingleUser,updateProfile,deleteUser}=require('../controllers/User')
+const {hasAuthorization,userById,getUsers,getSingleUser,updateProfile,deleteUser,getUserphoto}=require('../controllers/User')
 const {signUp,signIn,signOut,requireSignIn,}=require('../controllers/signup')
 const router = express.Router();
 router.use(expressValidator())
@@ -24,7 +24,8 @@ router.get('/signOut',signOut)
 router.get("/users",getUsers)
 router.get("/user/:userId",requireSignIn,getSingleUser)
 router.put("/user/update/:userId",requireSignIn,updateProfile)
-router.delete("/user/delete/:userId",requireSignIn,hasAuthorization,deleteUser)
+router.delete("/user/delete/:userId",requireSignIn,deleteUser)
+router.get("/user/photo/:userId",getUserphoto)
 
 // if a request to the route is made with user id it hits this function
 router.param("userId",userById)

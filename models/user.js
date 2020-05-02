@@ -28,7 +28,12 @@ updated:Date,
 photo:{
 data:Buffer,
 contentType:String
+},
+
+about:{
+ type:String   
 }
+
 })
 userSchema.virtual("password")
 .set(function(pass)

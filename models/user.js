@@ -2,6 +2,7 @@
 const mongoose =require('mongoose');
 const crypto =require('crypto');
 const uuidv1  = require('uuid/v1');
+const {ObjectId}=mongoose.Schema;
 const userSchema= new mongoose.Schema({
  
   Username:{
@@ -32,8 +33,11 @@ contentType:String
 
 about:{
  type:String   
-}
+},
 
+following:[{type:ObjectId}],
+
+followers:[{type:ObjectId}]
 })
 userSchema.virtual("password")
 .set(function(pass)

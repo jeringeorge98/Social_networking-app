@@ -3,7 +3,7 @@ const expressValidator =require('express-validator')
 
 const validator =require('../validator/index')
 const {getPosts,createPost,Test,postByUser,postById,checkPoster,deletePost,updatePost}=require('../controllers')
-const {hasAuthorization,userById,getUsers,getSingleUser,updateProfile,deleteUser,getUserphoto}=require('../controllers/User')
+const {hasAuthorization,userById,getUsers,getSingleUser,updateProfile,deleteUser,getUserphoto,addFollowers,addFollowing,removeFollowers,removeFollowing}=require('../controllers/User')
 const {signUp,signIn,signOut,requireSignIn,}=require('../controllers/signup')
 const router = express.Router();
 router.use(expressValidator())
@@ -27,6 +27,11 @@ router.put("/user/update/:userId",requireSignIn,updateProfile)
 router.delete("/user/delete/:userId",requireSignIn,deleteUser)
 router.get("/user/photo/:userId",getUserphoto)
 
+// following
+router.put("/user/follow",requireSignIn,addFollowers,addFollowing)
+//unfolllowing
+router.put("/user/follow",requireSignIn,removeFollowers,removeFollowing)
+router.put("/user/unfollow",requireSignIn,removeFollowers,removeFollowing)
 // if a request to the route is made with user id it hits this function
 router.param("userId",userById)
 

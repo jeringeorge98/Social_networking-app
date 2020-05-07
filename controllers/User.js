@@ -6,7 +6,12 @@ const fs = require("fs");
 exports.userById = (req, res, next, id) => {
   const { _id } = req.body;
 
-  User.findById(id).exec((err, user) => {
+  User.findById(id)
+  // populate followers and following
+  .populate("followers","_id Username")
+  .populate("following","_id Username")
+  
+  .exec((err, user) => {
     if (err || !user) {
       return res.status(400).json({
         message: "User not found",
@@ -124,74 +129,79 @@ exports.getUserphoto=(req,res,next)=>{
 }
 
 // following
+exports.addFollowing=(req,res,next)=>{
 
-exports.addFollowers=(req,res,next)=>{
-
-User.findByIdAndUpdate(req.body.userid,{$push:{following:req.body.followid}},(err,result)=>{
-  if(err){
-    res.status(400).json({
-      error:'Error processing request'
-    })
-  }
-  next();
-})
-
-
-}
-exports.addFollowing=(req,res)=>{
-  User.findByIdAndUpdate(req.body.followid,{$push:{follower:req.body.userid}},{new:true},(err,result)=>{
+  User.findByIdAndUpdate(req.body.userId,{$addToSet:{following:req.body.followId}},(err,result)=>{
     if(err){
       res.status(400).json({
-        error:'Unable to process request'
+        error:err
+      })
+    }
+   
+    next();
+  })
+}
+exports.addFollowers=(req,res)=>{
+  // console.log(req.body.userId)
+  User.findByIdAndUpdate(req.body.followId,{$addToSet:{followers:req.body.userId}},(err,result)=>{
+    if(err){
+      console.log(err)
+      res.status(400).json({
+        error:err
       })
     }
   })
-  .populate("following","_id name")
-  .populate("followers","_id name")
+  .populate("following","_id")
+  .populate("followers","_id")
   .exec((err,result)=>{
     if(err){
      res.status(400).json({
        error:err
      })
     }
-result.hashed_password=undefined
-result.salt= undefined
+    console.log(result)
+ result.hashed_password=undefined
+ result.salt= undefined
 res.json(result)
   })
+
+
 }
 
 // unfollow
-exports.removeFollowers=(req,res,next)=>{
+exports.removeFollowing=(req,res,next)=>{
 
   User.findByIdAndUpdate(req.body.userId,{$pull:{following:req.body.unfollowId}},(err,result)=>{
     if(err){
       res.status(400).json({
-        error:'Error processing request'
+        error:err
       })
     }
+   
     next();
   })
-  
-  
-  }
-  exports.removeFollowing=(req,res)=>{
-    User.findByIdAndUpdate(req.body.unfollowId,{$pull:{follower:req.body.userId}},{new:true},(err,result)=>{
-      if(err){
-        res.status(400).json({
-          error:'Unable to process request'
-        })
-      }
-    })
-    .populate("following","_id name")
-    .populate("followers","_id name")
-    .exec((err,result)=>{
-      if(err){
-       res.status(400).json({
-         error:err
-       })
-      }
-  result.hashed_password=undefined
-  result.salt= undefined
-  res.json(result)
-    })
-  }
+}  
+exports.removeFollowers=(req,res)=>{
+  User.findByIdAndUpdate(req.body.unfollowId,{$pull:{followers:req.body.userId}},{new:true},(err,result)=>{
+    if(err){
+      console.log(err)
+      res.status(400).json({
+        error:err
+      })
+    }
+  })
+  .populate("following","_id Username")
+  .populate("followers","_id Username")
+  .exec((err,result)=>{
+    if(err){
+     res.status(400).json({
+       error:err
+     })
+    }
+ result.hashed_password=undefined
+ result.salt= undefined
+res.json(result)
+  })
+
+
+}

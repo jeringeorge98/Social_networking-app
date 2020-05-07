@@ -35,9 +35,9 @@ about:{
  type:String   
 },
 
-following:[{type:ObjectId}],
+following:[{type:ObjectId,ref:"User",}],
 
-followers:[{type:ObjectId}]
+followers:[{type:ObjectId,ref:"User"}]
 })
 userSchema.virtual("password")
 .set(function(pass)

@@ -28,11 +28,11 @@ router.delete("/user/delete/:userId",requireSignIn,deleteUser)
 router.get("/user/photo/:userId",getUserphoto)
 
 // following
-router.put("/user/follow",requireSignIn,addFollowers,addFollowing)
+router.put("/user/follow",requireSignIn,addFollowing,addFollowers)
 //unfolllowing
-router.put("/user/follow",requireSignIn,removeFollowers,removeFollowing)
-router.put("/user/unfollow",requireSignIn,removeFollowers,removeFollowing)
-// if a request to the route is made with user id it hits this function
+router.put("/user/unfollow",requireSignIn,removeFollowing,removeFollowers)
+
+// if a request to the route is made with user id it hits this function first
 router.param("userId",userById)
 
 // if a request to the route is made with post id it hits this function

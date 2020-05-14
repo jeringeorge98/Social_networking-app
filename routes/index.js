@@ -3,7 +3,7 @@ const expressValidator =require('express-validator')
 
 const validator =require('../validator/index')
 const {getPosts,createPost,Test,postByUser,postById,checkPoster,deletePost,updatePost}=require('../controllers')
-const {hasAuthorization,userById,getUsers,getSingleUser,updateProfile,deleteUser,getUserphoto,addFollowers,addFollowing,removeFollowers,removeFollowing}=require('../controllers/User')
+const {hasAuthorization,userById,getUsers,getSingleUser,updateProfile,deleteUser,getUserphoto,addFollowers,addFollowing,removeFollowers,removeFollowing,suggestFollowers}=require('../controllers/User')
 const {signUp,signIn,signOut,requireSignIn,}=require('../controllers/signup')
 const router = express.Router();
 router.use(expressValidator())
@@ -31,7 +31,9 @@ router.get("/user/photo/:userId",getUserphoto)
 router.put("/user/follow",requireSignIn,addFollowing,addFollowers)
 //unfolllowing
 router.put("/user/unfollow",requireSignIn,removeFollowing,removeFollowers)
+// to suggest users
 
+router.get("/user/suggestUser/:userId",requireSignIn,suggestFollowers)
 // if a request to the route is made with user id it hits this function first
 router.param("userId",userById)
 

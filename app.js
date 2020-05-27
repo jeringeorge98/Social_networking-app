@@ -10,6 +10,7 @@ const bodyparser=require('body-parser')
 dotenv.config();
 const port =process.env.PORT;
 
+console.log(process.env.MONGOURI)
 mongoose.connect(process.env.MONGOURI,{
   useNewUrlParser:true,
   useUnifiedTopology:true

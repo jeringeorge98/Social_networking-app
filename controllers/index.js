@@ -82,11 +82,11 @@ next();
 exports.getPosts = (req, res) => {
   const post =Post.find()
   .populate("postedBy","_id Username")
-  .select("body  created")
+  .select("body title created")
   .then((posts)=>{
-    res.status(200).json({
-      posts,
-    }
+    res.status(200).json(
+      posts
+    
     )
   }).catch((err)=>{
     res.send(err)

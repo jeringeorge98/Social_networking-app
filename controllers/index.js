@@ -59,7 +59,7 @@ next();
 
 exports.postById =(req,res,next,id)=>{
 Post.findById(id)
-.populate("postedBy","_id name")
+.populate("postedBy","_id Username")
 .exec((err,results)=>{
 if(err || !results){
 res.status(400).json({
@@ -82,7 +82,8 @@ next();
 exports.getPosts = (req, res) => {
   const post =Post.find()
   .populate("postedBy","_id Username")
-  .select("body title created")
+  .select("body title created photo")
+  .sort({created:-1})
   .then((posts)=>{
     res.status(200).json(
       posts
@@ -147,3 +148,11 @@ Post.find({postedBy:req.profile._id})
 });
 
 }
+
+// get post photo
+exports.getPostphoto = (req, res, next) => {
+  res.set("Content-Type",req.post.photo.contentType)
+  return res.send(req.post.photo.data)
+
+  next();
+};

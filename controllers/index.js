@@ -7,18 +7,29 @@ const fs =require('fs')
 // to update a post
 
 exports.updatePost =(req,res)=>{
-let post=req.post
- post = _.extend(post,req.body)
- post.updated =Date.now();
- post.save((err,result)=>{
-  if(err){
-    res.status(400).json({
-      err:err
-    })
-  }
-res.json(result)
-
-})
+let form = new formidable.IncomingForm();
+  form.keepExtensions = true;
+  form.parse(req, (err, fields, files) => {
+    if (err) {
+      console.log(err);
+      res.status(400).json({
+        error: "Photo could not be uploaded",
+      });
+    }
+    let post = req.post;
+    post = _.extend(post, fields);
+    post.updated = Date.now();
+    if (files.photo) {
+      post.photo.data = fs.readFileSync(files.photo.path);
+      post.photo.contentType = files.photo.type;
+    }
+    post.save((err) => {
+      if (err) {
+        res.status(400).json({ error: err });
+      }
+      return res.status(200).json( post );
+    });
+  });
 
 }
 
@@ -156,3 +167,10 @@ exports.getPostphoto = (req, res, next) => {
 
   next();
 };
+
+// get single post
+
+exports.getSinglePost=(req,res)=>{
+return res.json(req.post)
+
+}
